@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block content %} {% if page_name == "login" %}
+<div class="">
+  <div class="">
+    {% if messages %}
+    <div class="">
+      {% for message in messages %}
+      <p>{{message}}</p>
+      {%endfor%}
+    </div>
+    {%endif%}
+  </div>
+  <form action="" method="post">
+    {% csrf_token %}
+
+    <div class="">
+      <label for="username">Username:</label>
+      <input
+        id="username"
+        type="text"
+        placeholder="Enter your username"
+        name="username"
+      />
+    </div>
+    <div class="">
+      <label for="password">Password:</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="Enter your password"
+        name="password"
+      />
+    </div>
+    <div class="">
+      <input type="submit" value="Submit" />
+    </div>
+  </form>
+
+  <p>Don't have an account yet?</p>
+  <a href="{% url 'create-account' %}">Signup</a>
+</div>
+
+{% else %}
+<div class="">
+  <form action="" method="post">
+    {% csrf_token %} {{create_user_form}}
+    <input type="submit" value="Submit" />
+  </form>
+  <p>Already have an account?</p>
+  <a href="{% url 'login-signup' %}">Login</a>
+</div>
+{% endif %} {% endblock content %}

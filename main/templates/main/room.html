@@ -1,4 +1,23 @@
 {% extends "base.html"%} {% block content %}
 <h1>Room page</h1>
 <h4>{{room.name}}</h4>
+
+<div class="">
+  <h3>Conversations</h3>
+  <hr />
+
+  {% for message in room_messages%}
+  <div class="">
+    <p>{{message.user}} <span></span> {{message.created|timesince}}</p>
+    <p>{{message.body}}</p>
+  </div>
+  <hr />
+  {% endfor %}
+</div>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="text" placeholder="Type your message..." name="message" />
+  <input type="submit" value="Submit" />
+</form>
 {% endblock %}
