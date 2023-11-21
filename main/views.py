@@ -69,33 +69,61 @@ def sign_up(request):
     return render(request, "main/login-signup.html", {"create_user_form":  create_user_form})
 
 
-
-
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') is not None else ''
     rooms = Room.objects.filter(Q(topic__name__icontains = q) | Q(name__icontains = q) | Q(description__icontains = q) )
+
+    recent_messages = Message.objects.filter(Q(room__topic__name__icontains = q))
+
     room_counts = rooms.count()
     topics = Topic.objects.all()
-    context = {"rooms": rooms, "topics": topics, "room_counts": room_counts}
+    context = {"rooms": rooms, "topics": topics, "room_counts": room_counts, "recent_messages": recent_messages}
     return render(request, "main/home.html", context)
    
+
+def user_profile(request, pk):
+    user  = User.objects.get(id = pk)
+    topics = Topic.objects.all()
+    recent_messages = user.message_set.all()
+    rooms = user.room_set.all()
+    context= {"user":user, "topics":topics, "rooms": rooms, "recent_messages": recent_messages}
+    return render(request, 'main/profile.html', context)
 
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all()
-
+    participants = room.participants.all()
     if request.method == "POST":
         Message.objects.create(
             user = request.user,
             room=room,
             body= request.POST.get("message")
         )
+        room.participants.add(request.user)
         return redirect("room", pk=room.id)
         
-    context = {"room": room, "room_messages": room_messages}
+    context = {"room": room, "room_messages": room_messages, "participants": participants}
 
     return render(request, "main/room.html", context)
+
+
+@login_required(login_url='login')
+def delete_message(request, pk):
+    message = Message.objects.get(id=pk)
+    if request.user != message.user:
+        return HttpResponse("Request not allowed!")
+    
+    if request.method == "POST":
+        message.delete()
+        return redirect('home')
+
+    context = {
+        "data": message
+    }
+
+    return render(request, "main/delete.html", context)
+    # message = Message.object
 
 
 @login_required(login_url='login')
@@ -107,7 +135,7 @@ def create_room(request):
         print(room_form)
         if room_form.is_valid():
             room = room_form.save(commit=False)
-            room.name = request.user
+            room.host = request.user
             room.save()
             return redirect('home')
 
@@ -146,5 +174,5 @@ def delete_room(request,pk):
         room.delete()
         return redirect("home")
     
-    return render(request, "main/delete.html", {"room": room})
+    return render(request, "main/delete.html", {"data": room})
         

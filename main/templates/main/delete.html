@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block content %}
 
 <div class="">
-  <p>Are you sure you want to delete {{room}}</p>
+  <p>Are you sure you want to delete {{data}}</p>
   <form action="" method="POST">
     {% csrf_token %}
     <a href="{{request.META.HTTP_REFERER}}">GO Back</a>

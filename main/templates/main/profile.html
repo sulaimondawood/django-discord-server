@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block content %}
+
+<style>
+  .profile_wrp {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+</style>
+
+<div class="profile_wrp">
+  <div>{% include "main/topics.html" %}</div>
+
+  <div>
+    <h1>{{user.username}}</h1>
+    {% include "main/feeds.html" %}
+  </div>
+
+  <div>{% include 'main/activities.html' %}</div>
+</div>
+
+{% endblock %}
