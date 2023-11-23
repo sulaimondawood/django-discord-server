@@ -1,11 +1,12 @@
-<div class="">
+<div class="topics-bar">
   <h3>Browse Topics</h3>
-  <a href="{% url 'home' %}">All</a>
-  <div class="">
+  <a class="a" href="{% url 'home' %}">All</a>
+  <div class="topics">
     {% for topic in topics %}
-    <p>
+    <div class="topic-div">
       <a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a>
-    </p>
+      <p>{{topic.room_set.all.count}}</p>
+    </div>
     {% endfor%}
   </div>
 </div>

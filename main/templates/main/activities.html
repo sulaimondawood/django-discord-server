@@ -1,6 +1,5 @@
-<h2>Recent Activities</h2>
-<hr />
-<div class="">
+<h3>Recent Activities</h3>
+<div class="activities-wrp">
   {% for recent_msg in recent_messages %}
   <div>
     <a href="{% url 'profile' recent_msg.user.id %}">
