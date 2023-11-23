@@ -2,7 +2,31 @@
 
 <div class="">
   <form action="" method="POST">
-    {% csrf_token %} {{room_form.as_p}}
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="topic">Topic</label>
+      <input
+        type="text"
+        value="{{room.topic.name}}"
+        name="topic"
+        list="topic-list"
+      />
+      <datalist id="topic-list">
+        <select>
+          {% for topic in topics %}
+          <option value="{{topic.name}}">{{topic.name}}</option>
+          {% endfor %}
+        </select>
+      </datalist>
+    </div>
+    <div class="form-group">
+      <label for="topic">Name</label>
+      <input value="{{room.name}}" type="text" name="name" />
+    </div>
+    <div class="form-group">
+      <label for="topic">Description</label>
+      <input value="{{room.description}}" type="text" name="description" />
+    </div>
     <input
       type="submit"
       value="Submit

@@ -135,3 +135,7 @@ a:hover {
   flex-direction: column;
   gap: 1rem;
 }
+
+.helptext {
+  display: none !important;
+}
